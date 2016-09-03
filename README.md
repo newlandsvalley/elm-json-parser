@@ -1,5 +1,5 @@
-elm-abc-parser
-==============
+elm-json-parser
+===============
 
 This is a straightforward JSON parser.  It builds a parse tree of the following shape:
 
