@@ -1,8 +1,8 @@
-module Samples exposing (addressBook, twitter, googleMaps, facebook, elmConfig)
+module Samples exposing (addressBook, twitter, googleMaps, facebook, github, elmConfig)
 
 {-|
 
-@docs addressBook, twitter, googleMaps, facebook, elmConfig
+@docs addressBook, twitter, googleMaps, facebook, github, elmConfig
 
 -}
 
@@ -175,6 +175,7 @@ twitter = """{
 googleMaps: String
 googleMaps = """[{"id":48,"title":"Helgelandskysten","longitude":"12.63376","latitude":"66.02219"},{"id":46,"title":"Tysfjord","longitude":"16.50279","latitude":"68.03515"},{"id":44,"title":"Sledehunds-ekspedisjon","longitude":"7.53744","latitude":"60.08929"},{"id":43,"title":"Amundsens sydpolferd","longitude":"11.38411","latitude":"62.57481"},{"id":39,"title":"Vikingtokt","longitude":"6.96781","latitude":"60.96335"},{"id":6,"title":"Tungtvann- sabotasjen","longitude":"8.49139","latitude":"59.87111"}]"""
 
+{-|-}
 facebook : String
 facebook = """{
    "data": [
@@ -219,6 +220,44 @@ facebook = """{
          "updated_time": "2010-08-02T21:27:44+0000"
       }
    ]
+}"""
+
+{- github sample
+   see https://www.brianthicks.com/post/2016/08/22/decoding-large-json-objects-a-summary/
+   a simple JSON parser provides another option
+-}
+github : String
+github = """{
+  "login": "octocat",
+  "id": 1,
+  "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+  "gravatar_id": "",
+  "url": "https://api.github.com/users/octocat",
+  "html_url": "https://github.com/octocat",
+  "followers_url": "https://api.github.com/users/octocat/followers",
+  "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+  "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+  "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+  "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+  "organizations_url": "https://api.github.com/users/octocat/orgs",
+  "repos_url": "https://api.github.com/users/octocat/repos",
+  "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+  "received_events_url": "https://api.github.com/users/octocat/received_events",
+  "type": "User",
+  "site_admin": false,
+  "name": "monalisa octocat",
+  "company": "GitHub",
+  "blog": "https://github.com/blog",
+  "location": "San Francisco",
+  "email": "octocat@github.com",
+  "hireable": false,
+  "bio": "There once was...",
+  "public_repos": 2,
+  "public_gists": 1,
+  "followers": 20,
+  "following": 0,
+  "created_at": "2008-01-14T04:33:35Z",
+  "updated_at": "2008-01-14T04:33:35Z"
 }"""
 
 {-|-}

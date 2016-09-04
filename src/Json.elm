@@ -15,7 +15,7 @@ import Combine.Num exposing (..)
 import String exposing (fromList)
 import Dict exposing (Dict, fromList)
 import JsonData exposing (..)
-import Debug exposing (..)
+--import Debug exposing (..)
 
 {- grammar
 
@@ -84,7 +84,7 @@ jnull = JNull <$ string "null"
 jobj : Parser JValue
 jobj =
    rec <| \() -> 
-      JObject <$> (Dict.fromList <$> (braces jmembers))
+      (JObject << Dict.fromList) <$> (braces jmembers)
          <?> "jobj"
 
 jarr : Parser JValue

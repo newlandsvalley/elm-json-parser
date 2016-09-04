@@ -81,6 +81,9 @@ wildTests =
         ,  test "Facebook" <|
             \() ->
                 expectParses(facebook)
+        ,  test "github" <|
+            \() ->
+                expectParses(github)
 
         ]
 
