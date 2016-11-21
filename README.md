@@ -1,7 +1,7 @@
 elm-json-parser
 ===============
 
-This is a straightforward JSON parser.  It builds a parse tree of the following shape:
+This is a straightforward JSON parser for Elm 0.18.  It builds a parse tree of the following shape:
 
 ```elm
 type JValue = 
@@ -26,6 +26,6 @@ This parser provides an alternative strategy to [Json.Decode](http://package.elm
 Dependencies
 ------------
 
-*  elm-lang/core 4.0.0
-*  Bogdanp/elm-combine 2.2.1
+*  elm-lang/core 5.0.0
+*  Bogdanp/elm-combine 3.1.1
 

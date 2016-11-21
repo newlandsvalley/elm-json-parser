@@ -10,7 +10,6 @@ module Json exposing (ParseError, parse)
 
 import Combine exposing (..)
 import Combine.Char exposing (..)
-import Combine.Infix exposing (..)
 import Combine.Num exposing (..)
 import String exposing (fromList)
 import Dict exposing (Dict, fromList)
@@ -47,7 +46,7 @@ type alias Member =
     ( String, JValue )
 
 
-quotedString : Parser String
+quotedString : Parser s String
 quotedString =
     string "\""
         *> regex "(\\\\\"|[^\"\n])*"
@@ -55,14 +54,14 @@ quotedString =
         <?> "quoted string"
 
 
-jstring : Parser JValue
+jstring : Parser s JValue
 jstring =
     JString
         <$> quotedString
         <?> "jstring"
 
 
-jnumber : Parser JValue
+jnumber : Parser s JValue
 jnumber =
     JNumber
         <$> (choice
@@ -73,12 +72,12 @@ jnumber =
         <?> "jnumber"
 
 
-integer : Parser Float
+integer : Parser s Float
 integer =
     Basics.toFloat <$> int
 
 
-jbool : Parser JValue
+jbool : Parser s JValue
 jbool =
     choice
         [ jtrue
@@ -87,50 +86,50 @@ jbool =
         <?> "jbool"
 
 
-jtrue : Parser JValue
+jtrue : Parser s JValue
 jtrue =
     JBool True <$ string "true"
 
 
-jfalse : Parser JValue
+jfalse : Parser s JValue
 jfalse =
     JBool False <$ string "false"
 
 
-jnull : Parser JValue
+jnull : Parser s JValue
 jnull =
     JNull <$ string "null"
 
 
-jobj : Parser JValue
+jobj : Parser s JValue
 jobj =
-    rec <|
+    lazy <|
         \() ->
             (JObject << Dict.fromList)
                 <$> (braces jmembers)
                 <?> "jobj"
 
 
-jarr : Parser JValue
+jarr : Parser s JValue
 jarr =
-    rec <|
+    lazy <|
         \() ->
             JArray
                 <$> (brackets jvaluesOrEmpty)
                 <?> "jarr"
 
 
-jmembers : Parser (List Member)
+jmembers : Parser s (List Member)
 jmembers =
-    rec <|
+    lazy <|
         \() ->
             sepBy1 (char ',' <* whiteSpace) (whiteSpace *> jmember)
                 <?> "jmembers"
 
 
-jmember : Parser Member
+jmember : Parser s Member
 jmember =
-    rec <|
+    lazy <|
         \() ->
             (,)
                 <$> quotedString
@@ -138,31 +137,31 @@ jmember =
                 <?> "jmember"
 
 
-jvaluesOrEmpty : Parser (List JValue)
+jvaluesOrEmpty : Parser s (List JValue)
 jvaluesOrEmpty =
-    rec <|
+    lazy <|
         \() ->
-            jvalues `or` empty
+            jvalues <|> empty
 
 
-empty : Parser (List JValue)
+empty : Parser s (List JValue)
 empty =
     [] <$ whiteSpace
 
 
-jvalues : Parser (List JValue)
+jvalues : Parser s (List JValue)
 jvalues =
-    rec <|
+    lazy <|
         \() ->
             sepBy1 (char ',' <* whiteSpace) (whiteSpace *> jvalue)
                 <?> "jvalues"
 
 
-jvalue : Parser JValue
+jvalue : Parser s JValue
 jvalue =
     let
         value =
-            rec <|
+            lazy <|
                 \() ->
                     choice
                         [ jobj
@@ -185,7 +184,7 @@ jvalue =
 -- possible whitespace
 
 
-whiteSpace : Parser String
+whiteSpace : Parser s String
 whiteSpace =
     regex "[ \t\x0D\n]*"
 
@@ -202,8 +201,8 @@ whiteSpace =
 parse : String -> Result.Result ParseError JValue
 parse s =
     case Combine.parse jvalue s of
-        ( Ok n, _ ) ->
+        Ok ( _, _, n ) ->
             Ok n
 
-        ( Err msgs, ctx ) ->
+        Err ( _, ctx, msgs ) ->
             Err { msgs = msgs, input = ctx.input, position = ctx.position }
